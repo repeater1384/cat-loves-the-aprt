@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.vue.model.mapper.HousedealMapper">
+
+	<resultMap type="HousedealDto" id="housedeal">
+		<result column = "aptCode" property="apartmentCode"/>
+		<result column = "aptName" property="apartmentName"/>
+		<result column = "dongCode" property="dong"/>
+		<result column = "lat" property="latitude"/>
+		<result column = "lng" property="longitude"/>
+		<result column = "dealAmount" property="amount"/>
+		<result column = "area" property="area"/>
+		<result column = "floor" property="floor"/>
+	</resultMap>
+	<select id="selectAll" parameterType="String" resultMap="housedeal">
+		select houseinfo.aptCode, houseinfo.aptName, houseinfo.dongCode,houseinfo.lat,
+		houseinfo.lng,housedeal.dealAmount, housedeal.area, housedeal.floor, housedeal.dealYear
+		from houseinfo 
+		join housedeal on houseinfo.aptCode = housedeal.aptCode
+		where left(houseinfo.dongcode,5) = #{gugunCode}
+		group by houseinfo.aptCode;
+	</select>
+
+	<select id="select" parameterType="map" resultMap="housedeal">
+		select houseinfo.aptCode, houseinfo.aptName, houseinfo.dongCode,houseinfo.lat,
+		houseinfo.lng,housedeal.dealAmount, housedeal.area, housedeal.floor, housedeal.dealYear
+		from houseinfo 
+		join housedeal on houseinfo.aptCode = housedeal.aptCode
+		where left(houseinfo.dongcode,5) = #{gugunCode} and housedeal.dealYear = #{dealYear} and housedeal.dealMonth = #{dealMonth};
+	</select>
+
+
+</mapper>

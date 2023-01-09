@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.vue.model.mapper.MemberMapper">
+
+	<select id="login" parameterType="memberDto" resultType="memberDto">
+		select username, userid, email
+		from ssafy_member
+		where userid = #{userid} and userpwd = #{userpwd}
+	</select>
+	
+	<select id="userInfo" parameterType="String" resultType="memberDto">
+		select username, userid, email, joindate
+		from ssafy_member
+		where userid = #{userid}
+	</select>
+	<insert id="joinMember" parameterType="memberDto">
+		insert into ssafy_member (username, userid, userpwd, email)
+		values (#{username}, #{userid}, #{userpwd}, #{email})
+	</insert>
+	
+	<select id="listMember" resultType="memberDto">
+		select username, userid, userpwd, email, joindate
+		from ssafy_member
+		order by joindate
+	</select>
+	
+	<select id="getMember" parameterType="String" resultType="memberDto">
+		select username, userid, userpwd, email, joindate
+		from ssafy_member
+		where userid = #{userId}
+	</select>
+	
+	<update id="updateMember" parameterType="memberDto">
+		update ssafy_member 
+		<trim prefix="set" suffixOverrides=",">
+			<if test="username!= null">username= #{username},</if>
+			<if test="userpwd != null">userpwd = #{userpwd},</if>
+			<if test="email != null">email = #{email},</if>
+		</trim>
+		where userid = #{userid}
+	</update>
+	
+	<delete id="deleteMember" parameterType="String">
+		delete from ssafy_member 
+		where userid = #{userid}
+	</delete>
+	
+	
+	<select id="getMemberByUserid" parameterType="String" resultType="memberDto">
+		select username, userid, userpwd, email, joindate
+		from ssafy_member
+		where userid like #{userid}
+		order by joindate
+	</select>
+	
+	
+	<select id="getMemberByUsername" parameterType="String" resultType="memberDto">
+		select username, userid, userpwd, email, joindate
+		from ssafy_member
+		where username like #{username}
+		order by joindate
+	</select>
+	
+	
+	<select id="getMemberByEmail" parameterType="String" resultType="memberDto">
+		select username, userid, userpwd, email, joindate
+		from ssafy_member
+		where email like #{email}
+		order by joindate
+	</select>
+	
+	<select id="checkMember" parameterType="memberDto" resultType="memberDto">
+		select *
+		from ssafy_member
+		where userid = #{userid} and username = #{username} and email = #{email}
+	</select>
+</mapper>
